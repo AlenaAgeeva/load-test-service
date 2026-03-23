@@ -1,0 +1,7 @@
+load:
+  threads: 2
+  requests: 100
+logging:
+  level:
+    ru.ageeva.loadtestservice: DEBUG
+    org.springframework.web.client: DEBUG

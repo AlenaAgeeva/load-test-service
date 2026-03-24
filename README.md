@@ -28,6 +28,7 @@
 
 ## **http://localhost:8080/swagger-ui/index.html**
 
+![](screenshots/swagger.jpg)
 
 🧱 Архитектура
 ```
@@ -78,6 +79,9 @@ POST /api/load/create
 
 ## **curl -X POST "http://localhost:8080/api/load/create?mode=parallel&total=50000"**
 
+![](screenshots/swagger_1.jpg)
+
+![](screenshots/swagger_2.jpg)
 
 ▶ Чтение пользователей
 
@@ -92,6 +96,10 @@ GET /api/load/read
 Пример:
 
 ## **curl "http://localhost:8080/api/load/read?mode=sequential&total=100000"**
+
+![](screenshots/swagger_3.jpg)
+
+![](screenshots/swagger_4.jpg)
 
 🧵 Режимы выполнения
 

@@ -13,5 +13,5 @@ springdoc:
     operationsSorter: method
 logging:
   level:
-    ru.ageeva.loadtestservice: DEBUG
-    org.springframework.web.client: DEBUG
+    ru.ageeva.loadtestservice: ERROR
+    org.springframework.web.client: ERROR

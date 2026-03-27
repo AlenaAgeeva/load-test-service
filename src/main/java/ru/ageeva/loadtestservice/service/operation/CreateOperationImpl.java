@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 import ru.ageeva.loadtestservice.dto.UserCreateDto;
 import ru.ageeva.loadtestservice.dto.UserResponseDto;
 
@@ -25,9 +26,17 @@ public class CreateOperationImpl implements CreateOperation {
 
     @Override
     public void create() {
-        String url = userServiceUrl + "/api/users";
+        String url = UriComponentsBuilder.fromHttpUrl(userServiceUrl)
+                .path("/api/users")
+                .build()
+                .toUriString();
         String passport = "loadtest_" + startTime + "_" + counter.getAndIncrement();
         UserCreateDto dto = new UserCreateDto("Load", "Test", passport);
-        restTemplate.postForObject(url, dto, UserResponseDto.class);
+        try {
+            restTemplate.postForObject(url, dto, UserResponseDto.class);
+        } catch (Exception e) {
+            log.error("Failed to create user with passport: {}", passport, e);
+            throw e;
+        }
     }
 }

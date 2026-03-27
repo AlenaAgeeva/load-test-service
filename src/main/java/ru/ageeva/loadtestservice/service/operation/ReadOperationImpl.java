@@ -6,6 +6,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 import ru.ageeva.loadtestservice.dto.UserResponseDto;
 
 import java.util.List;
@@ -29,17 +30,29 @@ public class ReadOperationImpl implements ReadOperation {
     public void read() {
         ensureIdsLoaded();
         long id = allIds.get(random.nextInt(allIds.size()));
-        String url = userServiceUrl + "/api/users/" + id;
-        restTemplate.getForObject(url, UserResponseDto.class);
+        String url = UriComponentsBuilder.fromHttpUrl(userServiceUrl)
+                .path("/api/users/{id}")
+                .buildAndExpand(id)
+                .toUriString();
+        try {
+            restTemplate.getForObject(url, UserResponseDto.class);
+        } catch (Exception e) {
+            log.error("Failed to read user with ID: {}", id, e);
+            throw e;
+        }
     }
 
     private synchronized void ensureIdsLoaded() {
         if (allIds == null) {
-            String idsUrl = userServiceUrl + "/api/users/ids";
+            String idsUrl = UriComponentsBuilder.fromHttpUrl(userServiceUrl)
+                    .path("/api/users/ids")
+                    .build()
+                    .toUriString();
             allIds = restTemplate.exchange(idsUrl, HttpMethod.GET, null,
                     new ParameterizedTypeReference<List<Long>>() {
                     }).getBody();
             if (allIds == null || allIds.isEmpty()) {
+                log.error("No user IDs available in the system");
                 throw new IllegalStateException("No user IDs available");
             }
         }

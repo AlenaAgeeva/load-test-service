@@ -4,7 +4,8 @@ user-service:
   url: http://localhost:8080
 load:
   threads: 100
-  requests: 100000
+  createRequests: 100000
+  readRequests: 1000000
 springdoc:
   api-docs:
     path: /api-docs

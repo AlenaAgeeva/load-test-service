@@ -26,7 +26,7 @@
 
 Автоматическая документация доступна по адресу:
 
-## **http://localhost:8080/swagger-ui/index.html**
+## **http://localhost:8081/swagger-ui/index.html**
 
 ![](screenshots/swagger.jpg)
 
@@ -50,7 +50,7 @@
 
 ⚙️ Конфигурация
 
-application.properties
+application.yml
 
 load.requests=100000
 user.service.url=http://localhost:8081

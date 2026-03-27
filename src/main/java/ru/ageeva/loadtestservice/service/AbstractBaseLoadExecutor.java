@@ -1,15 +1,18 @@
 package ru.ageeva.loadtestservice.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.HdrHistogram.Recorder;
 import ru.ageeva.loadtestservice.model.LoadTestStats;
 import ru.ageeva.loadtestservice.util.StatsUtil;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+@Slf4j
 @RequiredArgsConstructor
 public abstract class AbstractBaseLoadExecutor implements LoadExecutor {
     protected final StatsUtil statsUtil;
+
     protected abstract void runRequests(int totalRequests, RequestTask task);
 
     @FunctionalInterface
@@ -28,6 +31,7 @@ public abstract class AbstractBaseLoadExecutor implements LoadExecutor {
                 task.execute();
                 success.incrementAndGet();
             } catch (Exception e) {
+                log.error("Increment stats failed - number: {}, ", failure, e);
                 failure.incrementAndGet();
             } finally {
                 long durationMicros = (System.nanoTime() - startNano) / 1000;
